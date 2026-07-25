@@ -53,18 +53,3 @@ class BrowserViewModel : ViewModel(), WebViewEventListener {
         }
     }
 }
-
-data class BrowserUiState(
-    val tab: BrowserTab,
-)
-
-data class BrowserTab(
-    val url: String,
-    val progress: Float = 0f,
-    val canGoBack: Boolean = false,
-)
-
-sealed interface BrowserTabCommand {
-    data class LoadUrl(val url: String) : BrowserTabCommand
-    data object GoBack : BrowserTabCommand
-}
