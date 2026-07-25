@@ -1,5 +1,7 @@
 package com.jasonsb.litebrowser.ui
 
+import android.net.Uri
+import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -24,5 +26,13 @@ class DefaultWebChromeClient(
     override fun onProgressChanged(view: WebView?, newProgress: Int) {
         super.onProgressChanged(view, newProgress)
         listener.onProgressChanged(newProgress)
+    }
+
+    override fun onShowFileChooser(
+        webView: WebView?,
+        filePathCallback: ValueCallback<Array<Uri>>?,
+        fileChooserParams: FileChooserParams?
+    ): Boolean {
+        return listener.onShowFileChooser(filePathCallback, fileChooserParams)
     }
 }

@@ -1,5 +1,8 @@
 package com.jasonsb.litebrowser.ui
 
+import android.net.Uri
+import android.webkit.ValueCallback
+import android.webkit.WebChromeClient
 import android.webkit.WebView
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
@@ -25,14 +28,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BrowserContainer(
+fun BrowserScreen(
     modifier: Modifier = Modifier,
     viewModel: BrowserViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
     var webViewInstance by remember { mutableStateOf<WebView?>(null) }
 
     LaunchedEffect(Unit) {
@@ -44,10 +45,43 @@ fun BrowserContainer(
         }
     }
 
-    val tab = uiState.tab
+    BrowserWebView(
+        tab = uiState.tab,
+        bindWebViewInstance = { webViewInstance = it },
+        onAction = viewModel::onAction,
+        modifier = modifier,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BrowserWebView(
+    tab: BrowserTab,
+    bindWebViewInstance: (WebView) -> Unit,
+    onAction: (BrowserAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val fileUploadHandler = rememberFileUploadHandler()
+
+    val webViewEventListener = object : WebViewEventListener {
+        override fun onVisitedHistoryUpdated(url: String, canGoBack: Boolean) {
+            onAction(BrowserAction.OnVisitedHistoryUpdated(url, canGoBack))
+        }
+
+        override fun onProgressChanged(progress: Int) {
+            onAction(BrowserAction.OnProgressChanged(progress))
+        }
+
+        override fun onShowFileChooser(
+            filePathCallback: ValueCallback<Array<Uri>>?,
+            fileChooserParams: WebChromeClient.FileChooserParams?
+        ): Boolean {
+            return fileUploadHandler.onShowFileChooser(filePathCallback, fileChooserParams)
+        }
+    }
 
     BackHandler(enabled = tab.canGoBack) {
-        viewModel.handleBackPress()
+        onAction(BrowserAction.OnSystemBackPressed)
     }
 
     Scaffold(
@@ -57,14 +91,12 @@ fun BrowserContainer(
                     title = {
                         BrowserAddressBar(
                             currentUrl = tab.url,
-                            onUrlSubmitted = { input ->
-                                viewModel.loadFromAddressBar(input)
-                            }
+                            onUrlSubmitted = { onAction(BrowserAction.OnAddressBarEntered(it)) }
                         )
                     },
                     navigationIcon = {
                         IconButton(
-                            onClick = { viewModel.handleBackPress() },
+                            onClick = { onAction(BrowserAction.OnAddressBarBackClicked) },
                             enabled = tab.canGoBack
                         ) {
                             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -80,8 +112,9 @@ fun BrowserContainer(
             factory = { context ->
                 WebView(context).apply {
                     applyProductionSettings()
-                    attachBrowserClient(viewModel)
-                    webViewInstance = this
+                    setupDownloadHandler()
+                    attachBrowserClient(webViewEventListener)
+                    bindWebViewInstance(this)
                     loadUrl(tab.url)
                 }
             },
