@@ -26,6 +26,8 @@ The following needs to be implemented:
 - Override back handler when the current history has previous entries.
 - Add a progress bar and sync with `WebChromeClient.onProgressChanged()`.
 - Handle download and upload logic.
+- Allow users to set this app as default browser.
+- Handle link clicked on another app.
 
 File uploads are handled via `WebChromeClient.onShowFileChooser()`, backed by the system Storage Access Framework picker.
 

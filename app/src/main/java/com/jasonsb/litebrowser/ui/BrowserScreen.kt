@@ -113,7 +113,7 @@ fun BrowserWebView(
                 WebView(context).apply {
                     applyProductionSettings()
                     setupDownloadHandler()
-                    attachBrowserClient(webViewEventListener)
+                    attachBrowserClients(webViewEventListener)
                     bindWebViewInstance(this)
                     loadUrl(tab.url)
                 }

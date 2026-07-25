@@ -16,7 +16,7 @@ fun WebView.applyProductionSettings() {
     }
 }
 
-fun WebView.attachBrowserClient(listener: WebViewEventListener) {
+fun WebView.attachBrowserClients(listener: WebViewEventListener) {
     this.webViewClient = DefaultWebViewClient(listener)
     this.webChromeClient = DefaultWebChromeClient(listener)
 }

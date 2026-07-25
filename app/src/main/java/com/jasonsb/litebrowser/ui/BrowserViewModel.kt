@@ -20,6 +20,7 @@ class BrowserViewModel : ViewModel() {
 
     fun onAction(action: BrowserAction) {
         when (action) {
+            is BrowserAction.OnInitialUrlSet -> setInitialUrl(action.url)
             is BrowserAction.OnAddressBarEntered -> loadFromAddressBar(action.input)
             BrowserAction.OnAddressBarBackClicked -> handleBackPress()
             BrowserAction.OnSystemBackPressed -> handleBackPress()
@@ -27,6 +28,14 @@ class BrowserViewModel : ViewModel() {
             is BrowserAction.OnVisitedHistoryUpdated -> {
                 onVisitedHistoryUpdated(action.url, action.canGoBack)
             }
+        }
+    }
+
+    private fun setInitialUrl(url: String) {
+        val finalUrl = url.toSearchQueryOrUrl() ?: return
+
+        _uiState.update { current ->
+            current.copy(tab = current.tab.copy(url = finalUrl))
         }
     }
 
@@ -67,6 +76,10 @@ class BrowserViewModel : ViewModel() {
 }
 
 sealed interface BrowserAction {
+    /**
+     * User set initial URL (e.g., from external app).
+     */
+    data class OnInitialUrlSet(val url: String) : BrowserAction
 
     /**
      * User entered an input in the search bar.
@@ -91,7 +104,7 @@ sealed interface BrowserAction {
     /**
      * User loads a page and progress is updated.
      *
-     * Progress is a number from 0 to 100.
+     * [progress] is a number from 0 to 100.
      */
     data class OnProgressChanged(val progress: Int) : BrowserAction
 }
