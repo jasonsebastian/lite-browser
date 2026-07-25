@@ -19,18 +19,7 @@ class BrowserViewModel : ViewModel(), WebViewEventListener {
     val commands: SharedFlow<BrowserTabCommand> = _commands.asSharedFlow()
 
     fun loadFromAddressBar(input: String) {
-        val trimmed = input.trim()
-        val finalUrl = when {
-            trimmed.isEmpty() -> return
-            trimmed.startsWith("http://") || trimmed.startsWith("https://") -> trimmed
-            trimmed.contains(".") && !trimmed.contains(" ") -> "https://$trimmed"
-            else -> "https://www.google.com/search?q=${
-                java.net.URLEncoder.encode(
-                    trimmed,
-                    "UTF-8"
-                )
-            }"
-        }
+        val finalUrl = input.toSearchQueryOrUrl() ?: return
 
         viewModelScope.launch {
             _commands.emit(BrowserTabCommand.LoadUrl(finalUrl))
