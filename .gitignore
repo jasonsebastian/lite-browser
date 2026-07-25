@@ -1,0 +1,68 @@
+# Gradle and Build Outputs
+.gradle/
+build/
+*/build/
+*/*/build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Local configuration file (contains absolute paths and SDK locations)
+local.properties
+
+# Android Studio / IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/dictionaries/
+.idea/vcs.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+
+# Keystores and Signing (DO NOT COMMIT SENSITIVE KEYS)
+*.jks
+*.keystore
+keystore.properties
+signing.properties
+
+# Build Artifacts
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+*.prof
+
+# Log Files
+*.log
+*.profdata
+
+# Testing and Reports
+/app/build/reports/
+/app/build/test-results/
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# NDK / C++
+obj/
+jniLibs/
+
+# Google Services (if containing sensitive local config, though google-services.json is often committed. 
+# Uncomment if you want to hide it, but usually, it's safe for Firebase unless public open source)
+# google-services.json
+
+# Cache
+.kotlin/
