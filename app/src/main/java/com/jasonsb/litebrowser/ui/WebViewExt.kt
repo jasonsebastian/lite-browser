@@ -27,9 +27,14 @@ fun WebView.attachBrowserClient(listener: WebViewEventListener) {
  */
 fun WebView.setupDownloadHandler() {
     setDownloadListener { url, userAgent, contentDisposition, mimetype, _ ->
+        val uri = Uri.parse(url)
+        if (uri.scheme != "http" && uri.scheme != "https") {
+            return@setDownloadListener
+        }
+
         val fileName = URLUtil.guessFileName(url, contentDisposition, mimetype)
 
-        val request = DownloadManager.Request(Uri.parse(url)).apply {
+        val request = DownloadManager.Request(uri).apply {
             setMimeType(mimetype)
 
             // Attach cookies for authenticated sessions (e.g., banking PDFs)
