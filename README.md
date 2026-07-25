@@ -2,6 +2,8 @@
 
 A dummy Android browser app for learning purposes.
 
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/90e80519-fd9e-45ca-af6c-447702d8a2f0" />
+
 ### Learnings
 
 To create this Android browser app, I have decided to use `WebView` as the library.
