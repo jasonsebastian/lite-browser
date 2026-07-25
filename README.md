@@ -19,7 +19,8 @@ Inside `WebView`, I have enabled `javaScriptEnabled`.
     - Safe Browsing is enabled (Google Play Services' built-in malware and phishing detector for WebViews, enabled by default starting from Android 8.0 / API level 26).
     - No `addJavascriptInterface()` is used.
 
-When building a single tab UI, the following needs to be handled:
+When building a single tab UI, the following needs to be implemented:
 - Accept and sanitize URL from user input.
 - Update URL whenever user navigates to another page.
 - Override back handler when the current history has previous entries.
+- Add a progress bar and sync with `WebChromeClient.onProgressChanged()`.
