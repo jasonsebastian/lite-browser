@@ -90,7 +90,7 @@ fun BrowserWebView(
                 TopAppBar(
                     title = {
                         BrowserAddressBar(
-                            currentUrl = tab.url,
+                            url = tab.url,
                             isSecure = tab.isSecure,
                             onUrlSubmitted = { onAction(BrowserAction.OnAddressBarEntered(it)) }
                         )

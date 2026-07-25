@@ -29,12 +29,12 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun BrowserAddressBar(
-    currentUrl: String,
+    url: String,
     isSecure: Boolean,
     onUrlSubmitted: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var textInput by remember(currentUrl) { mutableStateOf(currentUrl) }
+    var textInput by remember(url) { mutableStateOf(url) }
     val focusManager = LocalFocusManager.current
 
     TextField(
