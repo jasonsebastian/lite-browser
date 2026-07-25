@@ -11,7 +11,7 @@ import com.jasonsb.litebrowser.ui.BrowserViewModel
 import com.jasonsb.litebrowser.ui.theme.LiteBrowserTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : ComponentActivity() {
+class BrowserActivity : ComponentActivity() {
 
     private val viewModel: BrowserViewModel by viewModel()
 

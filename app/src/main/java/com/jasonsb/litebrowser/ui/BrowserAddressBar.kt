@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun BrowserAddressBar(
     currentUrl: String,
+    isSecure: Boolean,
     onUrlSubmitted: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -51,7 +52,6 @@ fun BrowserAddressBar(
         },
         singleLine = true,
         leadingIcon = {
-            val isSecure = currentUrl.startsWith("https://")
             Icon(
                 imageVector = if (isSecure) Icons.Default.Lock else Icons.Default.Info,
                 contentDescription = if (isSecure) "Secure Connection" else "Not Secure",

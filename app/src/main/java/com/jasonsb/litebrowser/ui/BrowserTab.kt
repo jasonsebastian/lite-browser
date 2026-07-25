@@ -18,4 +18,11 @@ data class BrowserTab(
      * Whether this WebView has a back history item.
      */
     val canGoBack: Boolean = false,
-)
+) {
+
+    /**
+     * Whether the URL of this tab is secure.
+     */
+    val isSecure: Boolean
+        get() = url.startsWith("https://")
+}
