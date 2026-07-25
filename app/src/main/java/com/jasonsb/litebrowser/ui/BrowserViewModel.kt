@@ -44,6 +44,14 @@ class BrowserViewModel : ViewModel(), WebViewEventListener {
             )
         }
     }
+
+    override fun onProgressChanged(progress: Int) {
+        _uiState.update { current ->
+            current.copy(
+                tab = current.tab.copy(progress = progress / 100f)
+            )
+        }
+    }
 }
 
 data class BrowserUiState(
@@ -52,6 +60,7 @@ data class BrowserUiState(
 
 data class BrowserTab(
     val url: String,
+    val progress: Float = 0f,
     val canGoBack: Boolean = false,
 )
 

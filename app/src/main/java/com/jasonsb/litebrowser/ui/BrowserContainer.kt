@@ -2,7 +2,9 @@ package com.jasonsb.litebrowser.ui
 
 import android.webkit.WebView
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -50,26 +52,29 @@ fun BrowserContainer(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    BrowserAddressBar(
-                        currentUrl = tab.url,
-                        onUrlSubmitted = { input ->
-                            viewModel.loadFromAddressBar(input)
+            Column(modifier = Modifier.fillMaxWidth()) {
+                TopAppBar(
+                    title = {
+                        BrowserAddressBar(
+                            currentUrl = tab.url,
+                            onUrlSubmitted = { input ->
+                                viewModel.loadFromAddressBar(input)
+                            }
+                        )
+                    },
+                    navigationIcon = {
+                        IconButton(
+                            onClick = { viewModel.handleBackPress() },
+                            enabled = tab.canGoBack
+                        ) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                         }
-                    )
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = { viewModel.handleBackPress() },
-                        enabled = tab.canGoBack
-                    ) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
-                }
-            )
+                )
+                BrowserLoadingBar(tab.progress)
+            }
         },
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->
         AndroidView(
             factory = { context ->

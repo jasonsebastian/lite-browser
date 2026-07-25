@@ -42,11 +42,11 @@ fun BrowserAddressBar(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 4.dp),
-        textStyle = MaterialTheme.typography.bodySmall,
+        textStyle = MaterialTheme.typography.bodyMedium,
         placeholder = {
             Text(
                 "Search or type web address",
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
             )
         },
         singleLine = true,
